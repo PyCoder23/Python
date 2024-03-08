@@ -6,9 +6,9 @@ import tkinter as tk
 import mysql.connector
 mydb = mysql.connector.connect(
     host="localhost",
-    user="USERNAME",
-    password="PASSWORD",
-    database="DATABASE_NAME",
+    user="root",
+    password="Mayank@ATL",
+    database="cred",
     charset="utf8")
 
 mycursor = mydb.cursor() 
@@ -59,19 +59,28 @@ def captcha():
         temp_pass = temp_pass + random.choice(COMBINED_LIST)
         
     CAP = temp_pass
+    CAP = ""
                  
 def ried():
-    print("Success")
+    global Email
+    print("\nSuccess")
     label.config(text = "Login sucessful!")
     cap_ca.config(text = "7777777")
 
+    query = """SELECT name from credentials where EMAIL = %s"""
+    mycursor.execute(query, (Email,))
+    myresult = mycursor.fetchone()
+    name = myresult[0]
+    print("Welcome "+name)
+
 def wred():
-    print("Fail")
+    print("\nFail")
     messagebox.showerror("Wrong Credentials", "Invalid Username or Password")
     captcha()
     cap_ca.config(text = CAP)
     
 def Sub():
+    global Email
     fail = 0
     Email = email.get()
     Pass = pas.get()
@@ -79,9 +88,9 @@ def Sub():
     email.set("")
     pas.set("")
     cap.set("")
-    print(Email)
-    print(Pass)
-    print(Cap)
+    #print(Email)
+    #print(Pass)
+    #print(Cap)
     
     if Cap != CAP:
         messagebox.showerror("Wrong Verfication", "Invalid Captcha")
@@ -92,7 +101,7 @@ def Sub():
         query = """SELECT count(*) FROM CREDENTIALS where EMAIL = %s"""
         mycursor.execute(query, (Email,))
         myresult = mycursor.fetchone()
-        print(myresult[0])
+        #print(myresult[0])
         if int(myresult[0]) == 0:
             wred()
         else:
@@ -101,13 +110,13 @@ def Sub():
 
             myresult = mycursor.fetchall()
             for row in myresult:
-                print("Password  = ", row[0], "\n")
+                #print("Password  = ", row[0], "\n")
                 if row[0] == Pass:
                     ried()
                 else:
                     wred()
 
-    print("")
+    #print("")
 
 captcha()
 lab_em = Label(root, text = "Email", bg = "cyan", font = ("Comic Sans MS", 13, "bold"))
