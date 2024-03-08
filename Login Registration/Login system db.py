@@ -6,9 +6,9 @@ import tkinter as tk
 import mysql.connector
 mydb = mysql.connector.connect(
     host="localhost",
-    user="root",
-    password="Mayank@ATL",
-    database="cred",
+    user="USERNAME",
+    password="PASSWORD",
+    database="DATABASE_NAME",
     charset="utf8")
 
 mycursor = mydb.cursor() 
